@@ -1,0 +1,24 @@
+# created a new django project
+django-admin startproject blog
+# renamed main folder to blog_project
+
+# created two apps
+python3 manage.py startapp blog_app
+python3 manage.py startapp portfolio_app
+
+# added two new apps to the settings.py in blog folder
+
+# blog/settings.py
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'blog_app',
+    'portfolio_app',
+]
+
+# check if everything works fine
+python3 manage.py runserver
