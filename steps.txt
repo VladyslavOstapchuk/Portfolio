@@ -22,3 +22,73 @@ INSTALLED_APPS = [
 
 # check if everything works fine
 python3 manage.py runserver
+
+# create a database class in models.py from folder portfolio_app
+
+# Description of database table
+class Project(models.Model):
+    # title contains max 100 symbols
+    title = models.CharField(max_length=100)
+    # short description
+    description = models.CharField(max_length=250)
+    # upload_to contains folder where images will be uploaded
+    image = models.ImageField(upload_to='portfolio_app/images/')
+    # url to 
+    url = models.URLField(blank=True)
+
+# migrate changes in models.py 
+python3 manage.py migrate
+
+# ensure that changes in models.py are saved
+
+# make migration
+python3 manage.py makemigrations 
+
+# migrate changes in models.py 
+python3 manage.py migrate
+
+# Migrations need to be performed every time models.py is modified or created
+
+# Create super user for admin page
+python3 manage.py createsuperuser
+
+# Add created models to admin.py in portfolio_app folder
+
+from django.contrib import admin
+#
+from .models import Project
+
+# Register your models here.
+admin.site.register(Project)
+
+# Login to admins page with created user credentials and create a new project
+
+# Add to settings.py path to folder where images will be stored. Don't forget to import os module
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/4.2/howto/static-files/
+
+STATIC_URL = 'static/'
+
+# path to images stored to project database
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+#
+MEDIA_URL = 'media/'
+
+
+# Add to urls.py static urls
+
+from django.contrib import admin
+from django.urls import path
+# imported for static urls
+from django.conf.urls.static import static 
+from django.conf import settings
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+]
+
+urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+
+# After all these manipulations know we are able to open image stored to project database in browser
