@@ -92,3 +92,70 @@ urlpatterns = [
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 
 # After all these manipulations know we are able to open image stored to project database in browser
+
+# Add new view for the home page
+
+# views.py
+from django.shortcuts import render
+
+# Create your views here.
+def home(req):
+    # Path should not contain template folder name
+    return render(req, 'portfolio/home.html')
+
+# urls.py
+from django.contrib import admin
+from django.urls import path
+# imported for static urls
+from django.conf.urls.static import static 
+from django.conf import settings
+from portfolio_app import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', views.home, name='home'),
+]
+
+urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+
+# Create a new template named home.html in newly created folder templates/portfolio in your app folder
+<h1>My portfolio</h1>
+
+# Import database to views.py
+from django.shortcuts import render
+from .models import Project
+
+# Create your views here.
+def home(req):
+    # Import of all data from DB
+    projects = Project.objects.all()
+
+    return render(
+    # Request
+    req,
+    # Path to html page template. Path should not contain template folder name
+    'portfolio/home.html', {
+    # Passing DB objects to the html template
+    'projects':projects})
+
+# Test if imported DB works with the template
+
+<h1>My portfolio</h1>
+
+{{ project }}
+
+# Make home.html list database records
+
+<h1>My portfolio</h1>
+
+<!--django for loop for templates-->
+{% for project in projects %}
+
+<!--get title field value for every DB record -->
+<h2>{{ project.title }}</h2>
+<p>{{ project.description }}</p>
+<img src = "{{ project.image.url }}">
+{% if project.url%}
+<br><a href="{{ project.url}}">Link</a>
+{% endif%}
+{% endfor %}
