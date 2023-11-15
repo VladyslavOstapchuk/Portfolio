@@ -196,3 +196,5 @@ from django.shortcuts import render
 def all_blogs(req):
     # Template must be created
     return render(req, 'blog/all_blogs.html')
+
+# Create a model for Blog and make it visible from admins page. Also create all_blogs template and show last 5 publications
