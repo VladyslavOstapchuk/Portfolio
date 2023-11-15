@@ -159,3 +159,40 @@ def home(req):
 <br><a href="{{ project.url}}">Link</a>
 {% endif%}
 {% endfor %}
+
+# Modify ulrs.py in blog folder
+
+from django.contrib import admin
+from django.urls import path, include
+# imported for static urls
+from django.conf.urls.static import static 
+from django.conf import settings
+from portfolio_app import views
+
+# Links to pages
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', views.home, name='home'),
+    path('blog/', include('blog_app.urls')),
+]
+
+urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+
+# Create a new urls.py file for blog_app and add some configuration
+
+from django.urls import path
+from . import views
+
+# Links to pages
+urlpatterns = [
+    path('', views.all_blogs, name='all_blogs'),
+]
+
+# Create a new template and add it to views.py py of blog_app
+
+from django.shortcuts import render
+
+# Create your views here.
+def all_blogs(req):
+    # Template must be created
+    return render(req, 'blog/all_blogs.html')
