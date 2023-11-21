@@ -217,3 +217,118 @@ Then add this photo to template home.html
 <br><a href="{{ project.url}}">Link</a>
 {% endif%}
 {% endfor %}
+
+# Modify urls.py of blog_app aplication
+
+# Links to pages
+urlpatterns = [
+    path('', views.all_blogs, name='all_blogs'),
+    # Allows to create unique links to every blog post
+    path('<int:blog_id>/', views.detail, name='detail'),
+]
+
+# Also change views.py file for this application
+
+from django.shortcuts import render, get_object_or_404
+from .models import Blog
+
+# Create your views here.
+
+def all_blogs(req):
+    # List of all objects
+    # blogs = Blog.objects.all()
+    # Ordered by publication date. The last 5 publications
+    blogs = Blog.objects.order_by('-date')[:5]
+    return render(req, 'blog/all_blogs.html', {'blogs':blogs})
+
+def detail(req, blog_id):
+    blog = get_object_or_404(Blog, pk=blog_id)
+    return render(req, 'blog/detail.html', {'blog':blog})
+
+# Lets add name of application to the view and all_blogs
+
+from django.urls import path
+from . import views
+
+app_name = 'blog'
+
+# Links to pages
+urlpatterns = [
+    path('', views.all_blogs, name='all_blogs'),
+    # Allows to create unique links to every blog post
+    path('<int:blog_id>/', views.detail, name='detail'),
+]
+
+
+{% for blog in blogs %}
+
+<a href="{% url 'blog:detail' blog.id%}"><h2>{{ blog.title }}</h2></a>
+<h5>{{ blog.date }}</h5>
+<p>{{ blog.description }}</p>
+{% endfor %}
+
+# Blog name will identify which application we are using
+
+# Add link to blogs page in home.html
+
+<a href="{% url 'blog:all_blogs' %}">Blog</a>
+<br>
+
+# Remove bound for all_blogs in views.py of blog_app
+
+def all_blogs(req):
+    # List of all objects
+    # blogs = Blog.objects.all()
+    # Ordered by publication date. The last 5 publications
+    # blogs = Blog.objects.order_by('-date')[:5]
+    blogs = Blog.objects.order_by('-date')
+    return render(req, 'blog/all_blogs.html', {'blogs':blogs})
+
+# Add plural form for all_blogs.html
+
+<h2>This blog contains {{ blogs.count }} post{{ blogs.count|pluralize}}</h2>
+
+# Add some details to templates
+
+# detail.html
+<h1>{{ blog.title }}</h2>
+
+<h2>--{{ blog.date|date:'F jS Y' }}--</h2>
+
+{{ blog.description|safe }}
+
+# all_blogs.html
+<h2>This blog contains {{ blogs.count }} post{{ blogs.count|pluralize}}</h2>
+
+{% for blog in blogs %}
+
+<a href="{% url 'blog:detail' blog.id%}"><h2>{{ blog.title }}</h2></a>
+<!--Changes data format-->
+<h5>{{ blog.date| date:'M d Y' }}</h5>
+<!--Shows only 100 first characters and allows to use html in text-->
+<p>{{ blog.description|safe|truncatechars:100 }}</p>
+<!-- Don't show html tags -->
+<!-- <p>{{ blog.description|striptags|truncatechars:100 }}</p> -->
+
+{% endfor %}
+
+# Show blog title in admins page. Change models.py
+from django.db import models
+
+# Create your models here.
+
+# Description of database table
+
+class Project(models.Model):
+    # title contains max 100 symbols
+    title = models.CharField(max_length=100)
+    # short description
+    description = models.CharField(max_length=250)
+    # upload_to contains folder where images will be uploaded
+    image = models.ImageField(upload_to='portfolio_app/images/')
+    # url to 
+    url = models.URLField(blank=True)
+
+    # Change __str__ method
+    def __str__(self) -> str:
+        return self.title

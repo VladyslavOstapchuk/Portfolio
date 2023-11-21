@@ -9,3 +9,6 @@ class Blog(models.Model):
     description = models.CharField(max_length=250)
     # upload_to contains folder where images will be uploaded
     date = models.DateField(default=timezone.now)
+
+    def __str__(self) -> str:
+        return self.title

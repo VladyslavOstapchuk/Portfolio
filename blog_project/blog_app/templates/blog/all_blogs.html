@@ -1,7 +1,13 @@
+<h2>This blog contains {{ blogs.count }} post{{ blogs.count|pluralize}}</h2>
 
 {% for blog in blogs %}
 
-<h2>{{ blog.title }}</h2>
-<h5>{{ blog.date }}</h5>
-<p>{{ blog.description }}</p>
+<a href="{% url 'blog:detail' blog.id%}"><h2>{{ blog.title }}</h2></a>
+<!--Changes data format-->
+<h5>{{ blog.date| date:'M d Y' }}</h5>
+<!--Shows only 100 first characters and allows to use html in text-->
+<p>{{ blog.description|safe|truncatechars:100 }}</p>
+<!-- Don't show html tags -->
+<!-- <p>{{ blog.description|striptags|truncatechars:100 }}</p> -->
+
 {% endfor %}
