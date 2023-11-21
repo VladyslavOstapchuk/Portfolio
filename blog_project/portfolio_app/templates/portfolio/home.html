@@ -1,5 +1,10 @@
 <h1>My portfolio</h1>
+<!--loads content from static folder-->
+{% load static %}
 
+<a href="{% static 'portfolio_app/resume.txt'%}">Resume</a>
+
+<img src="{% static 'portfolio_app/LOGO-PJWSTK.jpg' %}">
 <!--django for loop for templates-->
 {% for project in projects %}
 

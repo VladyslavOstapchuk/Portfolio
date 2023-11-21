@@ -68,7 +68,7 @@ admin.site.register(Project)
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # path to images stored to project database
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -198,3 +198,22 @@ def all_blogs(req):
     return render(req, 'blog/all_blogs.html')
 
 # Create a model for Blog and make it visible from admins page. Also create all_blogs template and show last 5 publications
+
+Create in portfolio_app folder static/portfolio and add there a photo 
+Then add this photo to template home.html
+
+<h1>My portfolio</h1>
+{% load static %}
+
+<img src="{% static 'portfolio/LOGO-PJWSTK.png' %}">
+<!--django for loop for templates-->
+{% for project in projects %}
+
+<!--get title field value for every DB record -->
+<h2>{{ project.title }}</h2>
+<p>{{ project.description }}</p>
+<img src = "{{ project.image.url }}">
+{% if project.url%}
+<br><a href="{{ project.url}}">Link</a>
+{% endif%}
+{% endfor %}
