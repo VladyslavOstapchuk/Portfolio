@@ -332,3 +332,8 @@ class Project(models.Model):
     # Change __str__ method
     def __str__(self) -> str:
         return self.title
+
+    # Add some Bootstrap elements to home and all_blogs page
+
+    # Create a base.html template in templates folder of portfolio_app
+    # Copy all code from home.html to base.html and delete all code not related to Bootstrap
