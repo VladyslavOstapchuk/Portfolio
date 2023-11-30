@@ -337,3 +337,4 @@ class Project(models.Model):
 
     # Create a base.html template in templates folder of portfolio_app
     # Copy all code from home.html to base.html and delete all code not related to Bootstrap
+    # Add such static files as images and custom.css
